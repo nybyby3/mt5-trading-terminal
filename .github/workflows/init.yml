@@ -1,0 +1,23 @@
+name: Initialize Project
+on:
+  push:
+    paths:
+      - 'setup.py'
+jobs:
+  init:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate project files
+        run: python setup.py
+      - name: Remove setup files
+        run: rm -f setup.py
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Initialize MT5 trading terminal with all source files"
+          git push
